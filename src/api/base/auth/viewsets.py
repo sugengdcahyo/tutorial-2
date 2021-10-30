@@ -1,3 +1,4 @@
+from api.base.auth.serializers import RegisterValidations, UserSerializer
 from django.contrib.auth.models import User
 from rest_framework import (
     serializers,
@@ -7,7 +8,8 @@ from rest_framework import (
     status
 )
 from rest_framework.response import Response
-from api.base.auth.serializers import RegisterValidations
+from rest_framework.authtoken.models import Token
+from django.db import transaction
 class LoginViewsets(generics.CreateAPIView, viewsets.GenericViewSet):
     permission_classes = [permissions.AllowAny]
     serializer_class = None
@@ -23,10 +25,18 @@ class RegisterViewsets(generics.CreateAPIView, viewsets.GenericViewSet):
 
     def create(self, request, *args, **kwargs):
         # !type your code
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = User.objects.create_user(
-            **serializer.data
-        )
+        validation = self.serializer_class(data=request.data)
+        validation.is_valid(raise_exception=True)
+        with transaction.atomic():
+            user = User.objects.create_user(
+                **validation.data
+            )
+            token, created = Token.objects.get_or_create(user=user)
 
-        return Response(request.data)
+        serializer = UserSerializer(user, many=False)
+        response = {
+            "token": token.key,
+            "user": serializer.data
+        }
+
+        return Response(response)
