@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #3rd party
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    #own apps
 ]
 
 MIDDLEWARE = [
@@ -68,18 +74,21 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'shoping.wsgi.application'
+from .plugins import *
 
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'shoping',
+        'USER': 'root',
+        'PASSWORD': 'Ojolali123',
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
