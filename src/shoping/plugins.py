@@ -45,12 +45,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
-    'DEFAULT_FILTER_BACKENDS': ['dj_rql.drf.RQLFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'api.helpers.paginations.StandardResultsSetPagination',
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
     ),
-    'EXCEPTION_HANDLER': 'middleware.middleware_exceptions.custom_exception_handler',
     'PAGE_SIZE': 100,
 }
