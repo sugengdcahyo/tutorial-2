@@ -12,7 +12,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class LoginValidations(serializers.Serializer):
-    pass
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
 
 
 class RegisterValidations(serializers.Serializer):
@@ -32,6 +33,6 @@ class RegisterValidations(serializers.Serializer):
             Q(email=attrs['email'])
         ):
             raise serializers.ValidationError(
-                "registered username or password.")
+                "registered username or email.")
 
         return attrs
